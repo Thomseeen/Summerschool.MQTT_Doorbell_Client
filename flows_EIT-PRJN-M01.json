@@ -1,0 +1,251 @@
+[
+    {
+        "id": "f62e97f5.618f6",
+        "type": "tab",
+        "label": "Main",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "75b1cbb2.21755c",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "Local Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "Node-RED_Client01",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "5fbb1010.eaaa58",
+        "type": "debug",
+        "z": "f62e97f5.618f6",
+        "name": "after decode picture",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 940,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "fc7fbc48.2bb11",
+        "type": "debug",
+        "z": "f62e97f5.618f6",
+        "name": "raw",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 310,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "566d5755.f6494",
+        "type": "mqtt in",
+        "z": "f62e97f5.618f6",
+        "name": "MQTT-Client",
+        "topic": "hska/+/doorbell/#",
+        "qos": "0",
+        "broker": "75b1cbb2.21755c",
+        "x": 130,
+        "y": 420,
+        "wires": [
+            [
+                "b6b19ab2.a23038",
+                "fc7fbc48.2bb11"
+            ]
+        ]
+    },
+    {
+        "id": "b6b19ab2.a23038",
+        "type": "switch",
+        "z": "f62e97f5.618f6",
+        "name": "switch timestamp/picture",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "/doorbell/picture",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "/doorbell/timestamp",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "4a6b0099.0cf96"
+            ],
+            [
+                "e62ff2f6.a20c58"
+            ]
+        ]
+    },
+    {
+        "id": "e62ff2f6.a20c58",
+        "type": "function",
+        "z": "f62e97f5.618f6",
+        "name": "decode timestamp",
+        "func": "if (typeof msg.payload == \"string\") {\n    msg.payload = Buffer.from(msg.payload, 'utf8');\n}\nmsg.payload = Date(msg.payload.readUInt32BE(0));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 440,
+        "wires": [
+            [
+                "261b99f2.7ea66e"
+            ]
+        ]
+    },
+    {
+        "id": "4a6b0099.0cf96",
+        "type": "base64",
+        "z": "f62e97f5.618f6",
+        "name": "Convert picture binary to base64",
+        "action": "",
+        "property": "payload",
+        "x": 640,
+        "y": 400,
+        "wires": [
+            [
+                "5fbb1010.eaaa58",
+                "7885482.36c85b8"
+            ]
+        ]
+    },
+    {
+        "id": "261b99f2.7ea66e",
+        "type": "moment",
+        "z": "f62e97f5.618f6",
+        "name": "Format Unix timestamp",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Europe/Berlin",
+        "adjAmount": "0",
+        "adjType": "hours",
+        "adjDir": "add",
+        "format": "do MMMM YYYY H:m:s",
+        "locale": "de_DE",
+        "output": "payload",
+        "outputType": "msg",
+        "outTz": "Europe/Berlin",
+        "x": 820,
+        "y": 440,
+        "wires": [
+            [
+                "b09fe182.b66118",
+                "7885482.36c85b8"
+            ]
+        ]
+    },
+    {
+        "id": "b09fe182.b66118",
+        "type": "debug",
+        "z": "f62e97f5.618f6",
+        "name": "after decode timestamp",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1070,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "c74786ef.98ee4",
+        "type": "uibuilder",
+        "z": "f62e97f5.618f6",
+        "name": "",
+        "topic": "",
+        "url": "DoorbellClient",
+        "fwdInMessages": false,
+        "allowScripts": false,
+        "allowStyles": false,
+        "debugFE": false,
+        "copyIndex": false,
+        "x": 1360,
+        "y": 440,
+        "wires": [
+            [
+                "4b02bc3f.5fe524",
+                "7885482.36c85b8"
+            ],
+            [
+                "4b02bc3f.5fe524",
+                "7885482.36c85b8"
+            ]
+        ]
+    },
+    {
+        "id": "7885482.36c85b8",
+        "type": "function",
+        "z": "f62e97f5.618f6",
+        "name": "Buffer dynamic",
+        "func": "context.data = context.data || {};\ncontext.clients = context.clients || {};\n// Array for multiple messages if multiple clients have to be refreshed\nmsgs_out = [];\n// New browser-client -> add to clients-dict\nif (msg.uibuilderCtrl == 'ready for content') {\n    context.clients[msg._socketId] = '';\n    msgs_out = null;\n}\n// Browser-client disconnected -> delete from clients-dict\nelse if (msg.uibuilderCtrl == 'client disconnected') {\n    delete context.clients[msg._socketId];\n    msgs_out = null;\n}\n// Browser-client requested other number -> send buffered data\nelse if (msg.topic == 'Roomnumber') {\n    context.clients[msg._socketId] = msg.payload;\n    // If there is buffered data for that room, send that\n    if (context.data[msg.payload]) {\n        msg.room = msg.payload;\n        msg.payload = context.data[msg.payload];\n    }\n    // Respond with empty fields if there is no buffered data (yet)\n    else {\n        msg.room = msg.payload;\n        msg.payload = {};\n        msg.payload.picture = '';\n        msg.payload.timestamp = '';\n        msg.payload.newring = '';\n    }\n    msgs_out = msg;\n}\n// Incoming MQTT -> write into buffer and if matching client(s) is(are) connected send data\nelse if (msg.topic) {\n    if (msg.topic.includes('hska/office')) {\n        var room = msg.topic.split('/')[1];\n        context.data[room] = context.data[room] || {};\n        // Recieved timestamp via MQTT -> put into buffer\n        if (msg.topic.includes('/doorbell/timestamp')) {\n            context.data[room].timestamp = msg.payload;\n            context.data[room].newtime = true;\n            // Check synced\n            if (context.data[room].newpicture) {\n                context.data[room].newtime = false;\n                context.data[room].newpicture = false;\n                context.data[room].newring = 'in sync';\n            }\n            else {\n                context.data[room].newring = 'only timestamp';\n            }\n        }\n        // Recieved picture via MQTT -> put into buffer\n        if (msg.topic.includes('/doorbell/picture')) {\n            context.data[room].picture = msg.payload;\n            context.data[room].newpicture = true;\n            // Check synced\n            if (context.data[room].newtime) {\n                context.data[room].newtime = false;\n                context.data[room].newpicture = false;\n                context.data[room].newring = 'in sync';\n            }\n            else {\n                context.data[room].newring = 'only picture';\n            }\n        }\n        // Check wether a connected client needs to be updated\n        msg = null;\n        for (var clientid in context.clients) {\n            if (context.clients[clientid] == room) {\n                msg = {};\n                msg.room = room;\n                msg.payload = context.data[room];\n                msg._socketId = clientid;\n                msgs_out.push(msg);\n            }\n        }\n    }\n    else {\n        msgs_out = null;\n    }\n}\nelse {\n    msgs_out = null;\n}\nreturn [msgs_out];",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1040,
+        "y": 400,
+        "wires": [
+            [
+                "c74786ef.98ee4",
+                "cd4e22da.53c51"
+            ]
+        ]
+    },
+    {
+        "id": "4b02bc3f.5fe524",
+        "type": "debug",
+        "z": "f62e97f5.618f6",
+        "name": "reload/new connect",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1570,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "cd4e22da.53c51",
+        "type": "debug",
+        "z": "f62e97f5.618f6",
+        "name": "buffer dynamic out",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1270,
+        "y": 360,
+        "wires": []
+    }
+]

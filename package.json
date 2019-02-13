@@ -1,0 +1,12 @@
+{
+    "name": "MQTT_Doorbell_Client",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "dependencies": {},
+    "node-red": {
+        "settings": {
+            "flowFile": "flows_EIT-PRJN-M01.json",
+            "credentialsFile": "flows_EIT-PRJN-M01_cred.json"
+        }
+    }
+}
