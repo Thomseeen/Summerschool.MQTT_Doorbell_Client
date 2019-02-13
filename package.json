@@ -1,6 +1,6 @@
 {
     "name": "MQTT_Doorbell_Client",
-    "description": "A Node-RED Project",
+    "description": "A node-red client to display pictures and timestamps recieved via MQTT",
     "version": "0.0.1",
     "dependencies": {},
     "node-red": {
