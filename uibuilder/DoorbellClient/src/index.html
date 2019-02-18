@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#3f51b5">
+
+    <!-- Used if adding to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Doorbell Client">
+
+    <!-- Used if adding to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Doorbell Client">
+
+    <title>Doorbell Client</title>
+    <meta name="description" content="Doorbell Client">
+
+    <link rel="icon" href="./images/BellBW.ico">
+
+    <!-- OPTIONAL: Normalize is used to make things the same across browsers. Index is for your styles -->
+    <link rel="stylesheet" href="./vendor/normalize.css/normalize.css">
+    <link rel="stylesheet" href="./index.css">
+
+</head>
+
+<body>
+    <!-- The "app" element is where the code for dynamic updates is attached -->
+
+    <div id="app">
+        <section id="pic">
+            <span id="msgPicture"></span>
+            <p><span id="msgTimestamp"></span></p>
+            <p><span id="msgNewring"></span></p>
+        </section>
+        <div id="sub">
+            <section>
+                <table style="width=100%" margin="10">
+                    <tr>
+                        <td>Subscribe to:</td>
+                        <td><input id="inputRoomnumber" type="text" name="roomnumber" size="6"></td>
+                    </tr>
+                    <tr>
+                        <td>Subscribed to:</td>
+                        <td><span id="msgRoom"></span></td>
+                    </tr>
+                </table>
+            </section>
+            <img id="logo" src="img/HeaderLogoHsKA.svg">
+        </div>
+    </div>
+
+    <!-- These MUST be in the right order. Note no leading / -->
+    <!-- REQUIRED: Socket.IO is loaded only once for all instances
+                    Without this, you don't get a websocket connection -->
+    <script src="/uibuilder/socket.io/socket.io.js"></script>
+    <!-- Note no leading / -->
+    <!-- OPTIONAL: JQuery can be removed if not required -->
+    <script src="./vendor/jquery/dist/jquery.min.js"></script>
+    <!-- REQUIRED: Sets up Socket listeners and the msg object -->
+    <script src="./uibuilderfe.min.js"></script>
+    <!-- OPTIONAL: You probably want this. Put your custom code here -->
+    <script src="./index.js"></script>
+
+</body>
+
+</html>

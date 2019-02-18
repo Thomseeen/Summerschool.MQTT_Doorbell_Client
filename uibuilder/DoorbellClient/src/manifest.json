@@ -1,0 +1,15 @@
+{
+    "name": "Doorbell Client",
+    "short_name": "bellclient",
+    "description": "A website to display MQTT-Doorbells",
+    "display": "standalone",
+    "lang": "en-GB",
+    "icons": [
+        {
+            "src": "./images/BellBW.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "."
+}
