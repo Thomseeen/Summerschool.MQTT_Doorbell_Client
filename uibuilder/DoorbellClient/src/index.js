@@ -102,11 +102,6 @@ $(document).ready(function () {
         console.dir(uibuilder.get('inputRoomnumber').value)
         uibuilder.send({ 'topic': 'Roomnumber', 'payload': uibuilder.get('inputRoomnumber').value })
     })
-
-    var scale = Math.min(
-        availableWidth / contentWidth,
-        availableHeight / contentHeight
-    );
 }) // --- End of JQuery Ready --- //
 
 // EOF
